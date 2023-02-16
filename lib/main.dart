@@ -34,13 +34,13 @@ final _router = GoRouter(
     GoRoute(
       path: '/Q/:listid/answering/:qid',
       pageBuilder: (context, state) => MaterialPage(
-        child: question(),
+        child: Questionscreen(),
       ),
     ),
     GoRoute(
       path: '/Q/:listid/result',
       pageBuilder: (context, state) => MaterialPage(
-        child: result(),
+        child: Resultscreen(),
       ),
     ),
     GoRoute(

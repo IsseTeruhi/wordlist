@@ -14,8 +14,13 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+Questions _$QuestionsFromJson(Map<String, dynamic> json) {
+  return _Questions.fromJson(json);
+}
+
 /// @nodoc
 mixin _$Questions {
+  String get id => throw _privateConstructorUsedError;
   String get state => throw _privateConstructorUsedError;
   String get image => throw _privateConstructorUsedError;
   List<String> get option => throw _privateConstructorUsedError;
@@ -23,6 +28,7 @@ mixin _$Questions {
   String get explain => throw _privateConstructorUsedError;
   String get noteid => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $QuestionsCopyWith<Questions> get copyWith =>
       throw _privateConstructorUsedError;
@@ -34,7 +40,8 @@ abstract class $QuestionsCopyWith<$Res> {
       _$QuestionsCopyWithImpl<$Res, Questions>;
   @useResult
   $Res call(
-      {String state,
+      {String id,
+      String state,
       String image,
       List<String> option,
       String answer,
@@ -55,6 +62,7 @@ class _$QuestionsCopyWithImpl<$Res, $Val extends Questions>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? state = null,
     Object? image = null,
     Object? option = null,
@@ -63,6 +71,10 @@ class _$QuestionsCopyWithImpl<$Res, $Val extends Questions>
     Object? noteid = null,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       state: null == state
           ? _value.state
           : state // ignore: cast_nullable_to_non_nullable
@@ -99,7 +111,8 @@ abstract class _$$_QuestionsCopyWith<$Res> implements $QuestionsCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String state,
+      {String id,
+      String state,
       String image,
       List<String> option,
       String answer,
@@ -118,6 +131,7 @@ class __$$_QuestionsCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? state = null,
     Object? image = null,
     Object? option = null,
@@ -126,6 +140,10 @@ class __$$_QuestionsCopyWithImpl<$Res>
     Object? noteid = null,
   }) {
     return _then(_$_Questions(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       state: null == state
           ? _value.state
           : state // ignore: cast_nullable_to_non_nullable
@@ -155,10 +173,11 @@ class __$$_QuestionsCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$_Questions implements _Questions {
   const _$_Questions(
-      {required this.state,
+      {required this.id,
+      required this.state,
       required this.image,
       required final List<String> option,
       required this.answer,
@@ -166,6 +185,11 @@ class _$_Questions implements _Questions {
       required this.noteid})
       : _option = option;
 
+  factory _$_Questions.fromJson(Map<String, dynamic> json) =>
+      _$$_QuestionsFromJson(json);
+
+  @override
+  final String id;
   @override
   final String state;
   @override
@@ -187,7 +211,7 @@ class _$_Questions implements _Questions {
 
   @override
   String toString() {
-    return 'Questions(state: $state, image: $image, option: $option, answer: $answer, explain: $explain, noteid: $noteid)';
+    return 'Questions(id: $id, state: $state, image: $image, option: $option, answer: $answer, explain: $explain, noteid: $noteid)';
   }
 
   @override
@@ -195,6 +219,7 @@ class _$_Questions implements _Questions {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Questions &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.state, state) || other.state == state) &&
             (identical(other.image, image) || other.image == image) &&
             const DeepCollectionEquality().equals(other._option, _option) &&
@@ -203,8 +228,9 @@ class _$_Questions implements _Questions {
             (identical(other.noteid, noteid) || other.noteid == noteid));
   }
 
+  @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, state, image,
+  int get hashCode => Object.hash(runtimeType, id, state, image,
       const DeepCollectionEquality().hash(_option), answer, explain, noteid);
 
   @JsonKey(ignore: true)
@@ -212,17 +238,30 @@ class _$_Questions implements _Questions {
   @pragma('vm:prefer-inline')
   _$$_QuestionsCopyWith<_$_Questions> get copyWith =>
       __$$_QuestionsCopyWithImpl<_$_Questions>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_QuestionsToJson(
+      this,
+    );
+  }
 }
 
 abstract class _Questions implements Questions {
   const factory _Questions(
-      {required final String state,
+      {required final String id,
+      required final String state,
       required final String image,
       required final List<String> option,
       required final String answer,
       required final String explain,
       required final String noteid}) = _$_Questions;
 
+  factory _Questions.fromJson(Map<String, dynamic> json) =
+      _$_Questions.fromJson;
+
+  @override
+  String get id;
   @override
   String get state;
   @override
