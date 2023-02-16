@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:wordlistandtest_app/screens/configue_list.dart';
 
 import '../../models/notes/notes_model.dart';
 import 'home_screen_notifier.dart';
@@ -15,7 +16,9 @@ class HomeScreen extends ConsumerWidget {
     final state = ref.watch(homeScreenProvider); //river podでデータの更新の監視
     List _notelist = state.notelist;
     List<String> _selecter = ["編集", "削除", "キャンセル"];
-    _alert(_id, _uindex) {
+    final homeNotifier =
+        ref.read(homeScreenProvider.notifier);
+    _alert(_uid) {
       //context意味？
       showDialog(
         context: context,
@@ -39,7 +42,7 @@ class HomeScreen extends ConsumerWidget {
                 child: Text("OK"),
                 onPressed: () {
                   print(_notelist);
-                  //_notelist.removeAt(_uindex);  //listの削除処理がわからない(riverpodを使った？,ref.read ?)
+                  homeNotifier.removeTodo(_uid);  //listの削除処理がわからない(riverpodを使った？,ref.read ?)
                   //context.go('/');           //routerが使えない？
                   Navigator.of(context).pop();
                 },
@@ -88,7 +91,7 @@ class HomeScreen extends ConsumerWidget {
                       context.go('/listedit/:listid');
                     }
                     if (s == '削除') {
-                      _alert(_notelist[index].id, index);
+                      _alert(_notelist[index].id);
                     }
                     if (s == 'キャンセル') {
                       context.go('/');
@@ -122,7 +125,8 @@ class HomeScreen extends ConsumerWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        onPressed: () => context.go('/newlist/configue'),
+        onPressed: () { context.go('/newlist/configue');
+        ref.read(currentNoteProvider.notifier).state=Notes(text: "", addtime: DateTime.now(), id: "", qlist: []);},
         child: Icon(Icons.add),
       ),
     );

@@ -6,11 +6,12 @@ import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 import 'package:wordlistandtest_app/screens/home/home_screen_notifier.dart';
 import '../models/notes/notes_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-final textProvider = StateProvider<String>((ref) => ''); ////
+//final textProvider = StateProvider<String>((ref) => ''); ////
 // bool型を使うためのProvider。初期値はfalseにする
 final enableProvider = StateProvider<bool>(((ref) => true));
-final noteProvider = StateProvider<Notes>(
+final currentNoteProvider = StateProvider<Notes>(
     (ref) => Notes(text: "", addtime: DateTime.now(), id: "", qlist: []));
 
 class Configuelist extends ConsumerWidget {
@@ -18,8 +19,7 @@ class Configuelist extends ConsumerWidget {
   final uuid = const Uuid();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final text = ref.watch(textProvider); ////
-    
+    final note = ref.watch(currentNoteProvider);
 
     final boolNotifier = ref.read(enableProvider.notifier); ////
 
@@ -41,7 +41,8 @@ class Configuelist extends ConsumerWidget {
             TextFormField(
               //controller: ref.read(textProvider.notifier).state,
               onChanged: (String data) {
-                ref.read(textProvider.notifier).state = data;
+                final _edditedtextnote = note.copyWith(text: data);
+                ref.read(currentNoteProvider.notifier).state = _edditedtextnote;
               },
             ),
             const SizedBox(height: 8),
@@ -51,18 +52,15 @@ class Configuelist extends ConsumerWidget {
               // リスト追加ボタン
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(foregroundColor: Colors.amber),
-                onPressed:text.isEmpty ////
+                onPressed: note.text.isEmpty ////
                     ? null //directにnullをつけないと処理が反映されない
                     : () {
                         context.go('/newlist/add/:listid');
-                        ref
-                            .read(noteProvider.notifier)
-                            .state
-                            .copyWith(id: uuid.v4());
-                        homeNotifier
-                            .add(ref.watch(noteProvider.notifier).state);
+                        final _tentatibeid = uuid.v4();
+                        final _editididnote = note.copyWith(id: _tentatibeid);
+                        homeNotifier.addnote(_editididnote);
+                        //ref.read(noteProvider.notifier).state=Notes(text: "", addtime: DateTime.now(), id: "", qlist: []);
                       },
-
                 // ①
                 //  () => _submit(),
                 // ②

@@ -14,6 +14,10 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+Notes _$NotesFromJson(Map<String, dynamic> json) {
+  return _Notes.fromJson(json);
+}
+
 /// @nodoc
 mixin _$Notes {
   String get text => throw _privateConstructorUsedError;
@@ -21,6 +25,7 @@ mixin _$Notes {
   String get id => throw _privateConstructorUsedError;
   List<Questions> get qlist => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $NotesCopyWith<Notes> get copyWith => throw _privateConstructorUsedError;
 }
@@ -117,14 +122,18 @@ class __$$_NotesCopyWithImpl<$Res> extends _$NotesCopyWithImpl<$Res, _$_Notes>
 }
 
 /// @nodoc
-
-class _$_Notes implements _Notes {
+@JsonSerializable()
+class _$_Notes extends _Notes {
   const _$_Notes(
       {required this.text,
       required this.addtime,
       required this.id,
       required final List<Questions> qlist})
-      : _qlist = qlist;
+      : _qlist = qlist,
+        super._();
+
+  factory _$_Notes.fromJson(Map<String, dynamic> json) =>
+      _$$_NotesFromJson(json);
 
   @override
   final String text;
@@ -156,6 +165,7 @@ class _$_Notes implements _Notes {
             const DeepCollectionEquality().equals(other._qlist, _qlist));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, text, addtime, id,
       const DeepCollectionEquality().hash(_qlist));
@@ -165,14 +175,24 @@ class _$_Notes implements _Notes {
   @pragma('vm:prefer-inline')
   _$$_NotesCopyWith<_$_Notes> get copyWith =>
       __$$_NotesCopyWithImpl<_$_Notes>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_NotesToJson(
+      this,
+    );
+  }
 }
 
-abstract class _Notes implements Notes {
+abstract class _Notes extends Notes {
   const factory _Notes(
       {required final String text,
       required final DateTime addtime,
       required final String id,
       required final List<Questions> qlist}) = _$_Notes;
+  const _Notes._() : super._();
+
+  factory _Notes.fromJson(Map<String, dynamic> json) = _$_Notes.fromJson;
 
   @override
   String get text;
