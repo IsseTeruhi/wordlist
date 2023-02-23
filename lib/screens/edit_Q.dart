@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class ConfigueQ extends StatelessWidget {
-  const ConfigueQ({super.key});
+class EditQ extends StatelessWidget {
+  const EditQ({super.key});
 
   @override
   Widget build(BuildContext context) {

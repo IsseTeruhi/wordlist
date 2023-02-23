@@ -1,40 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:wordlistandtest_app/screens/configue_Q.dart';
-import 'package:wordlistandtest_app/screens/configue_list.dart';
+import 'package:wordlistandtest_app/screens/set_Q.dart';
+import 'package:wordlistandtest_app/screens/add_list.dart';
 import 'package:wordlistandtest_app/screens/detail_Q.dart';
-import 'package:wordlistandtest_app/screens/listedit.dart';
-import 'package:wordlistandtest_app/screens/question.dart';
+import 'package:wordlistandtest_app/screens/edit_list.dart';
+import 'package:wordlistandtest_app/screens/answer_Q.dart';
 
-import 'screens/add_list.dart';
+import 'screens/add_Q.dart';
 import 'screens/home/home_screen.dart';
 import 'screens/result.dart';
 
 void main() {
-  runApp(ProviderScope (child:  MyApp()));
+  runApp(ProviderScope(child: MyApp()));
 }
-final _router = GoRouter(
-  initialLocation: '/',
 
+final _router = GoRouter(
+  initialLocation: '/home',
   routes: [
     GoRoute(
-      path: '/',
+      path: '/home',
       pageBuilder: (context, state) => MaterialPage(
-        child: HomeScreen(
-        ),
+        child: HomeScreen(),
       ),
     ),
     GoRoute(
+        path: '/add',
+        pageBuilder: (context, state) => MaterialPage(
+              child: Addlist(),
+            ),
+        routes: [
+          GoRoute(
+              path: ':noteid/:pindex',
+              pageBuilder: (context, state) => MaterialPage(
+                    child: AddQ(noteId:state.params['noteid']! ,pindex:0),
+                  )),
+        ]),
+    GoRoute(
       path: '/Q/:listid/configue',
       pageBuilder: (context, state) => MaterialPage(
-        child: ConfigueQ(),
+        child: SetQ(),
       ),
     ),
     GoRoute(
       path: '/Q/:listid/answering/:qid',
       pageBuilder: (context, state) => MaterialPage(
-        child: Questionscreen(),
+        child: AnswerQ(),
       ),
     ),
     GoRoute(
@@ -52,19 +63,7 @@ final _router = GoRouter(
     GoRoute(
       path: '/listedit/:listid',
       pageBuilder: (context, state) => MaterialPage(
-        child: Listedit(),
-      ),
-    ),
-    GoRoute(
-      path: '/newlist/configue',
-      pageBuilder: (context, state) => MaterialPage(
-        child: Configuelist(),
-      ),
-    ),
-    GoRoute(
-      path: '/newlist/add/:listid',
-      pageBuilder: (context, state) => MaterialPage(
-        child: Addlist(),
+        child: Editlist(),
       ),
     ),
   ],
@@ -77,20 +76,15 @@ final _router = GoRouter(
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
 
- 
-
   @override
   Widget build(BuildContext context) {
-    return
-     MaterialApp.router(
+    return MaterialApp.router(
       routeInformationParser: _router.routeInformationParser,
       routerDelegate: _router.routerDelegate,
       routeInformationProvider: _router.routeInformationProvider,
     );
   }
 }
-
-
 
 class BasicPage extends StatelessWidget {
   const BasicPage({
