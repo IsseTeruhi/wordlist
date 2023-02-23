@@ -3,7 +3,7 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:wordlistandtest_app/screens/configue_list.dart';
+import 'package:wordlistandtest_app/screens/add_list.dart';
 
 import '../../models/notes/notes_model.dart';
 import 'home_screen_notifier.dart';
@@ -14,10 +14,9 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(homeScreenProvider); //river podでデータの更新の監視
-    List _notelist = state.notelist;
+    List<Notes> _notelist = state.notelist;
     List<String> _selecter = ["編集", "削除", "キャンセル"];
-    final homeNotifier =
-        ref.read(homeScreenProvider.notifier);
+    final homeNotifier = ref.read(homeScreenProvider.notifier);
     _alert(_uid) {
       //context意味？
       showDialog(
@@ -42,7 +41,8 @@ class HomeScreen extends ConsumerWidget {
                 child: Text("OK"),
                 onPressed: () {
                   print(_notelist);
-                  homeNotifier.removeTodo(_uid);  //listの削除処理がわからない(riverpodを使った？,ref.read ?)
+                  homeNotifier.removeTodo(
+                      _uid); //listの削除処理がわからない(riverpodを使った？,ref.read ?)
                   //context.go('/');           //routerが使えない？
                   Navigator.of(context).pop();
                 },
@@ -72,7 +72,7 @@ class HomeScreen extends ConsumerWidget {
                   border: new Border(
                       bottom: BorderSide(width: 1.0, color: Colors.grey))),
               child: ListTile(
-                onTap: () => context.go('/Q/:listid'),
+                onTap: () => context.go('/add/${_notelist[index].id}/0'),
                 title: Text(
                   _notelist[index].text,
                   style: TextStyle(fontSize: 30),
@@ -88,7 +88,7 @@ class HomeScreen extends ConsumerWidget {
                   ),
                   onSelected: (String s) {
                     if (s == '編集') {
-                      context.go('/listedit/:listid');
+                      context.go('/add/${_notelist[index].id}/0');
                     }
                     if (s == '削除') {
                       _alert(_notelist[index].id);
@@ -118,15 +118,17 @@ class HomeScreen extends ConsumerWidget {
               ),
             ),
             background: Container(color: Colors.red),
-            onDismissed: (direction) {
-            },
+            onDismissed: (direction) {},
           );
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        onPressed: () { context.go('/newlist/configue');
-        ref.read(currentNoteProvider.notifier).state=Notes(text: "", addtime: DateTime.now(), id: "", qlist: []);},
+        onPressed: () {
+          context.go('/add');
+          ref.read(currentNoteProvider.notifier).state =
+              Notes(text: "", addtime: DateTime.now(), id: "", qlist: []);
+        },
         child: Icon(Icons.add),
       ),
     );

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Questionscreen extends StatelessWidget {
-  const Questionscreen({super.key});
+class Editlist extends StatelessWidget {
+  const Editlist({super.key});
 
   @override
   Widget build(BuildContext context) {
