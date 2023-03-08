@@ -1,18 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:wordlistandtest_app/common/constants.dart';
 import 'package:wordlistandtest_app/screens/set_Q.dart';
 import 'package:wordlistandtest_app/screens/add_list.dart';
 import 'package:wordlistandtest_app/screens/detail_Q.dart';
 import 'package:wordlistandtest_app/screens/edit_list.dart';
 import 'package:wordlistandtest_app/screens/answer_Q.dart';
 
-import 'screens/add_Q.dart';
+import 'screens/add_quiz/add_quiz.dart';
 import 'screens/home/home_screen.dart';
 import 'screens/result.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Supabase.initialize(
+    url: supabaseUrl ,
+    anonKey: supabaseAnonKey,
+  );
   runApp(ProviderScope(child: MyApp()));
+  
 }
 
 final _router = GoRouter(
@@ -33,7 +41,7 @@ final _router = GoRouter(
           GoRoute(
               path: ':noteid/:pindex',
               pageBuilder: (context, state) => MaterialPage(
-                    child: AddQ(noteId:state.params['noteid']! ,pindex:0),
+                    child: AddQuiz(noteId:state.params['noteid']! ,pindex:0),
                   )),
         ]),
     GoRoute(

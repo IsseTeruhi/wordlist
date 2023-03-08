@@ -1,36 +1,36 @@
 //状態管理のファイル
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wordlistandtest_app/common/constants.dart';
-import '../../models/notes/notes_model.dart';
+import 'package:wordlistandtest_app/models/questions/questions_model.dart';
 
-part 'home_screen_notifier.freezed.dart';
+part 'add_quiz_notifier.freezed.dart';
 
 //状態 ( state ) を保持することを責務とする。
 ////Immutable な CounterState を宣言
 ////NullSafety 対応のため デフォルト値を宣言
 @freezed
-class HomeScreenState with _$HomeScreenState {
-  const factory HomeScreenState({
-    required List<Notes> notelist, //状態管理したいものを入れる
-  }) = _HomeScreenState;
+class AddQuizState with _$AddQuizState {
+  const factory AddQuizState({
+    required int currentIndex,
+    required List<Questions> quizList, //状態管理したいものを入れる
+  }) = _AddQuizState;
 }
 
 //
-final homeScreenProvider =
-    StateNotifierProvider<HomeScreenNotifier, HomeScreenState>(
-  (ref) => HomeScreenNotifier(ref)..initState(),
+final AddQuizProvider =
+    StateNotifierProvider<AddQuizNotifier, AddQuizState>(
+  (ref) => AddQuizNotifier(ref)..initState(),
 );
 
-class HomeScreenNotifier extends StateNotifier<HomeScreenState> {
+class AddQuizNotifier extends StateNotifier<AddQuizState> {
   final Ref ref;
   //ログイン・ログアウトするたびに状態をアップデート
 
-  HomeScreenNotifier(this.ref) : super(HomeScreenState(notelist: [])) {
+  AddQuizNotifier(this.ref) : super(AddQuizState(currentIndex:0, quizList: [],)) {
     //ここに初期処理を書く
     initState();
     //例　ローカルのデータベースの初期処理
@@ -54,35 +54,33 @@ class HomeScreenNotifier extends StateNotifier<HomeScreenState> {
 
   Future<void> localsave() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<Notes> savenote = state.notelist;
+    List<Questions> savenote = state.quizList;
     List<String> data = savenote.map((e) => jsonEncode(e)).toList();
-    prefs.setStringList('lnotelist', data);
+    prefs.setStringList('quizList', data);
   }
 
   Future<void> localroad() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final data = prefs.getStringList('lnotelist');
+    final data = prefs.getStringList('quizList');
     if (data != null) {
-      List<Notes> loadnote =
-          data.map((e) => Notes.fromJson(jsonDecode(e))).toList();
-      state = state.copyWith(notelist: loadnote);
+      List<Questions> loadnote =
+          data.map((e) => Questions.fromJson(jsonDecode(e))).toList();
+      state = state.copyWith(quizList: loadnote);
     }
   }
 
   // state は immutable なため、copyWith で複製する
-  void addnote(Notes note) {
-    List<Notes> newNotes = [...state.notelist, note];
-    state = state.copyWith(notelist: newNotes);
+  void addnote(Questions note) {
+    List<Questions> newNotes = [...state.quizList, note];
+    state = state.copyWith(quizList: newNotes);
     localsave();
     supabaseSave(note);
   }
 
-  Future<void> supabaseSave(Notes note) async {
+  Future<void> supabaseSave(Questions note) async {
     final updates = {
       'id': note.id,
-      'addtime': note.addtime.toIso8601String(),
-      'qlist': note.qlist,
-      'text': note.text,
+     
     };
     try {
       await supabase.from('Notes').upsert(updates);
@@ -97,13 +95,13 @@ class HomeScreenNotifier extends StateNotifier<HomeScreenState> {
 
   void removeTodo(String id) {
     final edditedlist =
-        state.notelist.where((state) => state.id != id).toList();
-    final edditedstate = state.copyWith(notelist: edditedlist);
+        state.quizList.where((state) => state.id != id).toList();
+    final edditedstate = state.copyWith(quizList: edditedlist);
     state = edditedstate;
     localsave();
   }
 
-  void updatenote(Notes note) {
+  void updatenote(Questions note) {
     removeTodo(note.id);
     addnote(note);
   }

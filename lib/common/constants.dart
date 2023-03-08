@@ -1,0 +1,5 @@
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+SupabaseClient supabase = Supabase.instance.client;
+const supabaseUrl =  'https://ywtmepavmywyzknowruk.supabase.co';
+const supabaseAnonKey ='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl3dG1lcGF2bXl3eXprbm93cnVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzgyNTQxODIsImV4cCI6MTk5MzgzMDE4Mn0.06bzHKJyWg1ogy1ezcYrbTBSzS_eij0T1I653de8pl8';
