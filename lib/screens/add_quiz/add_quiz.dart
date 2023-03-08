@@ -4,7 +4,7 @@ import 'package:uuid/uuid.dart';
 import 'package:wordlistandtest_app/models/notes/notes_model.dart';
 import 'package:wordlistandtest_app/models/questions/questions_model.dart';
 import 'package:wordlistandtest_app/screens/add_list.dart';
-import 'home/home_screen_notifier.dart';
+import '../home/home_screen_notifier.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final indexProvider = StateProvider<int>(((ref) => 0)); //
@@ -17,33 +17,23 @@ final questionProvider = StateProvider<Questions>((ref) => Questions(
     explain: '',
     noteid: ''));
 
-class AddQ extends ConsumerWidget {
+class AddQuiz extends ConsumerWidget {
   int pindex;
   String noteId;
-  AddQ({Key? key, required this.pindex, required this.noteId})
+  AddQuiz({Key? key, required this.pindex, required this.noteId})
       : super(key: key);
   final uuid = const Uuid();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //noteをidを元に取得
-    final state = ref.watch(homeScreenProvider);
-    List<Notes> _notelist = state.notelist;
-    Notes _note = _notelist.where((element) => element.id == noteId).first;
-    List<Questions> qlist = _note.qlist;
     final indexQ = ref.watch(indexProvider);
     final question = ref.watch(questionProvider);
-    final homeNotifier = ref.read(homeScreenProvider.notifier);
     final note = ref.watch(currentNoteProvider);
 
     TextEditingController _statecontrollers = TextEditingController();
     TextEditingController _answercontrollers = TextEditingController();
     List<TextEditingController> _optioncontrollers = [];
-    _bar(String x) {
-      return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(x),
-        duration: const Duration(milliseconds: 5000),
-      ));
-    }
+
 
     return Scaffold(
       appBar: AppBar(
@@ -131,14 +121,21 @@ class AddQ extends ConsumerWidget {
                             explain: '',
                             noteid: ''));
                   } else {
-                    _bar("入力に不備があります。");
+                    _bar("入力に不備があります。",context);
                   }
                 }),
           ],
         ),
       ),
     );
+    
   }
+      _bar(String x,BuildContext context) {
+      return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(x),
+        duration: const Duration(milliseconds: 5000),
+      ));
+    }
 }
 
 Widget _statefield(WidgetRef ref, TextEditingController controller) {
@@ -161,7 +158,7 @@ Widget _statefield(WidgetRef ref, TextEditingController controller) {
         },
         child: TextFormField(
           controller: controller,
-          decoration: InputDecoration(
+          decoration:const InputDecoration(
             contentPadding: EdgeInsets.all(30),
             fillColor: Colors.red,
             filled: true,
