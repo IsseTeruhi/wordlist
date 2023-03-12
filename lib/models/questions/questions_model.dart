@@ -10,7 +10,7 @@ part 'questions_model.g.dart';
 class Questions with _$Questions {
   const factory Questions({
     required String id,
-    required String state,
+    required String text,
     required String image,
     required List <String> option,
     required String answer,

@@ -7,6 +7,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wordlistandtest_app/common/constants.dart';
 import '../../models/notes/notes_model.dart';
+import '../../models/questions/questions_model.dart';
 
 part 'home_screen_notifier.freezed.dart';
 
@@ -81,7 +82,6 @@ class HomeScreenNotifier extends StateNotifier<HomeScreenState> {
     final updates = {
       'id': note.id,
       'addtime': note.addtime.toIso8601String(),
-      'qlist': note.qlist,
       'text': note.text,
     };
     try {
@@ -95,16 +95,28 @@ class HomeScreenNotifier extends StateNotifier<HomeScreenState> {
     }
   }
 
-  void removeTodo(String id) {
+  void removeTodo(String id) async {
     final edditedlist =
         state.notelist.where((state) => state.id != id).toList();
     final edditedstate = state.copyWith(notelist: edditedlist);
+
     state = edditedstate;
+    deleteQuestions(id);
     localsave();
   }
+}
 
-  void updatenote(Notes note) {
-    removeTodo(note.id);
-    addnote(note);
+void deleteQuestions(String id) async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  final data = prefs.getStringList('quizList');
+  if (data != null) {
+    List<Questions> allQuestions =
+        data.map((e) => Questions.fromJson(jsonDecode(e))).toList();
+
+    List<Questions> questions =
+        allQuestions.where((element) => element.noteid != id).toList();
+
+    List<String> udata = questions.map((e) => jsonEncode(e)).toList();
+    prefs.setStringList('quizList', udata);
   }
 }
