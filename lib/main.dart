@@ -3,11 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wordlistandtest_app/common/constants.dart';
-import 'package:wordlistandtest_app/screens/set_Q.dart';
+import 'package:wordlistandtest_app/screens/answer_quiz.dart';
+import 'package:wordlistandtest_app/screens/detail_quiz.dart';
+import 'package:wordlistandtest_app/screens/set_quiz.dart';
 import 'package:wordlistandtest_app/screens/add_list.dart';
-import 'package:wordlistandtest_app/screens/detail_Q.dart';
 import 'package:wordlistandtest_app/screens/edit_list.dart';
-import 'package:wordlistandtest_app/screens/answer_Q.dart';
 
 import 'screens/add_quiz/add_quiz.dart';
 import 'screens/home/home_screen.dart';
@@ -41,19 +41,19 @@ final _router = GoRouter(
           GoRoute(
               path: ':noteid/:pindex',
               pageBuilder: (context, state) => MaterialPage(
-                    child: AddQuiz(noteId:state.params['noteid']! ,pindex:0),
+                    child: AddQuiz(noteId:state.params['noteid']! ,pindex:int.parse(state.params['pindex']??'0')),
                   )),
         ]),
     GoRoute(
       path: '/Q/:listid/configue',
       pageBuilder: (context, state) => MaterialPage(
-        child: SetQ(),
+        child: Setquiz(),
       ),
     ),
     GoRoute(
       path: '/Q/:listid/answering/:qid',
       pageBuilder: (context, state) => MaterialPage(
-        child: AnswerQ(),
+        child: Answerquiz(),
       ),
     ),
     GoRoute(
@@ -65,7 +65,7 @@ final _router = GoRouter(
     GoRoute(
       path: '/Q/:listid/result/detail/:qid',
       pageBuilder: (context, state) => MaterialPage(
-        child: DetailQ(),
+        child: Detailquiz(),
       ),
     ),
     GoRoute(

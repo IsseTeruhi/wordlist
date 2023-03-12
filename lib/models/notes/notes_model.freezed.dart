@@ -23,7 +23,6 @@ mixin _$Notes {
   String get text => throw _privateConstructorUsedError;
   DateTime get addtime => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
-  List<Questions> get qlist => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +34,7 @@ abstract class $NotesCopyWith<$Res> {
   factory $NotesCopyWith(Notes value, $Res Function(Notes) then) =
       _$NotesCopyWithImpl<$Res, Notes>;
   @useResult
-  $Res call({String text, DateTime addtime, String id, List<Questions> qlist});
+  $Res call({String text, DateTime addtime, String id});
 }
 
 /// @nodoc
@@ -54,7 +53,6 @@ class _$NotesCopyWithImpl<$Res, $Val extends Notes>
     Object? text = null,
     Object? addtime = null,
     Object? id = null,
-    Object? qlist = null,
   }) {
     return _then(_value.copyWith(
       text: null == text
@@ -69,10 +67,6 @@ class _$NotesCopyWithImpl<$Res, $Val extends Notes>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      qlist: null == qlist
-          ? _value.qlist
-          : qlist // ignore: cast_nullable_to_non_nullable
-              as List<Questions>,
     ) as $Val);
   }
 }
@@ -83,7 +77,7 @@ abstract class _$$_NotesCopyWith<$Res> implements $NotesCopyWith<$Res> {
       __$$_NotesCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String text, DateTime addtime, String id, List<Questions> qlist});
+  $Res call({String text, DateTime addtime, String id});
 }
 
 /// @nodoc
@@ -98,7 +92,6 @@ class __$$_NotesCopyWithImpl<$Res> extends _$NotesCopyWithImpl<$Res, _$_Notes>
     Object? text = null,
     Object? addtime = null,
     Object? id = null,
-    Object? qlist = null,
   }) {
     return _then(_$_Notes(
       text: null == text
@@ -113,10 +106,6 @@ class __$$_NotesCopyWithImpl<$Res> extends _$NotesCopyWithImpl<$Res, _$_Notes>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      qlist: null == qlist
-          ? _value._qlist
-          : qlist // ignore: cast_nullable_to_non_nullable
-              as List<Questions>,
     ));
   }
 }
@@ -124,13 +113,8 @@ class __$$_NotesCopyWithImpl<$Res> extends _$NotesCopyWithImpl<$Res, _$_Notes>
 /// @nodoc
 @JsonSerializable()
 class _$_Notes extends _Notes {
-  const _$_Notes(
-      {required this.text,
-      required this.addtime,
-      required this.id,
-      required final List<Questions> qlist})
-      : _qlist = qlist,
-        super._();
+  const _$_Notes({required this.text, required this.addtime, required this.id})
+      : super._();
 
   factory _$_Notes.fromJson(Map<String, dynamic> json) =>
       _$$_NotesFromJson(json);
@@ -141,17 +125,10 @@ class _$_Notes extends _Notes {
   final DateTime addtime;
   @override
   final String id;
-  final List<Questions> _qlist;
-  @override
-  List<Questions> get qlist {
-    if (_qlist is EqualUnmodifiableListView) return _qlist;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_qlist);
-  }
 
   @override
   String toString() {
-    return 'Notes(text: $text, addtime: $addtime, id: $id, qlist: $qlist)';
+    return 'Notes(text: $text, addtime: $addtime, id: $id)';
   }
 
   @override
@@ -161,14 +138,12 @@ class _$_Notes extends _Notes {
             other is _$_Notes &&
             (identical(other.text, text) || other.text == text) &&
             (identical(other.addtime, addtime) || other.addtime == addtime) &&
-            (identical(other.id, id) || other.id == id) &&
-            const DeepCollectionEquality().equals(other._qlist, _qlist));
+            (identical(other.id, id) || other.id == id));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, text, addtime, id,
-      const DeepCollectionEquality().hash(_qlist));
+  int get hashCode => Object.hash(runtimeType, text, addtime, id);
 
   @JsonKey(ignore: true)
   @override
@@ -188,8 +163,7 @@ abstract class _Notes extends Notes {
   const factory _Notes(
       {required final String text,
       required final DateTime addtime,
-      required final String id,
-      required final List<Questions> qlist}) = _$_Notes;
+      required final String id}) = _$_Notes;
   const _Notes._() : super._();
 
   factory _Notes.fromJson(Map<String, dynamic> json) = _$_Notes.fromJson;
@@ -200,8 +174,6 @@ abstract class _Notes extends Notes {
   DateTime get addtime;
   @override
   String get id;
-  @override
-  List<Questions> get qlist;
   @override
   @JsonKey(ignore: true)
   _$$_NotesCopyWith<_$_Notes> get copyWith =>

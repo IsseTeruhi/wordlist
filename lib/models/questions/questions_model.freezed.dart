@@ -21,7 +21,7 @@ Questions _$QuestionsFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Questions {
   String get id => throw _privateConstructorUsedError;
-  String get state => throw _privateConstructorUsedError;
+  String get text => throw _privateConstructorUsedError;
   String get image => throw _privateConstructorUsedError;
   List<String> get option => throw _privateConstructorUsedError;
   String get answer => throw _privateConstructorUsedError;
@@ -41,7 +41,7 @@ abstract class $QuestionsCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
-      String state,
+      String text,
       String image,
       List<String> option,
       String answer,
@@ -63,7 +63,7 @@ class _$QuestionsCopyWithImpl<$Res, $Val extends Questions>
   @override
   $Res call({
     Object? id = null,
-    Object? state = null,
+    Object? text = null,
     Object? image = null,
     Object? option = null,
     Object? answer = null,
@@ -75,9 +75,9 @@ class _$QuestionsCopyWithImpl<$Res, $Val extends Questions>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      state: null == state
-          ? _value.state
-          : state // ignore: cast_nullable_to_non_nullable
+      text: null == text
+          ? _value.text
+          : text // ignore: cast_nullable_to_non_nullable
               as String,
       image: null == image
           ? _value.image
@@ -112,7 +112,7 @@ abstract class _$$_QuestionsCopyWith<$Res> implements $QuestionsCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
-      String state,
+      String text,
       String image,
       List<String> option,
       String answer,
@@ -132,7 +132,7 @@ class __$$_QuestionsCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? state = null,
+    Object? text = null,
     Object? image = null,
     Object? option = null,
     Object? answer = null,
@@ -144,9 +144,9 @@ class __$$_QuestionsCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      state: null == state
-          ? _value.state
-          : state // ignore: cast_nullable_to_non_nullable
+      text: null == text
+          ? _value.text
+          : text // ignore: cast_nullable_to_non_nullable
               as String,
       image: null == image
           ? _value.image
@@ -177,7 +177,7 @@ class __$$_QuestionsCopyWithImpl<$Res>
 class _$_Questions implements _Questions {
   const _$_Questions(
       {required this.id,
-      required this.state,
+      required this.text,
       required this.image,
       required final List<String> option,
       required this.answer,
@@ -191,7 +191,7 @@ class _$_Questions implements _Questions {
   @override
   final String id;
   @override
-  final String state;
+  final String text;
   @override
   final String image;
   final List<String> _option;
@@ -211,7 +211,7 @@ class _$_Questions implements _Questions {
 
   @override
   String toString() {
-    return 'Questions(id: $id, state: $state, image: $image, option: $option, answer: $answer, explain: $explain, noteid: $noteid)';
+    return 'Questions(id: $id, text: $text, image: $image, option: $option, answer: $answer, explain: $explain, noteid: $noteid)';
   }
 
   @override
@@ -220,7 +220,7 @@ class _$_Questions implements _Questions {
         (other.runtimeType == runtimeType &&
             other is _$_Questions &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.state, state) || other.state == state) &&
+            (identical(other.text, text) || other.text == text) &&
             (identical(other.image, image) || other.image == image) &&
             const DeepCollectionEquality().equals(other._option, _option) &&
             (identical(other.answer, answer) || other.answer == answer) &&
@@ -230,7 +230,7 @@ class _$_Questions implements _Questions {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, state, image,
+  int get hashCode => Object.hash(runtimeType, id, text, image,
       const DeepCollectionEquality().hash(_option), answer, explain, noteid);
 
   @JsonKey(ignore: true)
@@ -250,7 +250,7 @@ class _$_Questions implements _Questions {
 abstract class _Questions implements Questions {
   const factory _Questions(
       {required final String id,
-      required final String state,
+      required final String text,
       required final String image,
       required final List<String> option,
       required final String answer,
@@ -263,7 +263,7 @@ abstract class _Questions implements Questions {
   @override
   String get id;
   @override
-  String get state;
+  String get text;
   @override
   String get image;
   @override

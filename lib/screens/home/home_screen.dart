@@ -127,7 +127,7 @@ class HomeScreen extends ConsumerWidget {
         onPressed: () {
           context.go('/add');
           ref.read(currentNoteProvider.notifier).state =
-              Notes(text: "", addtime: DateTime.now(), id: "", qlist: []);
+              Notes(text: "", addtime: DateTime.now(), id: "");
         },
         child: Icon(Icons.add),
       ),

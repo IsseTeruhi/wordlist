@@ -21,8 +21,7 @@ class AddQuizState with _$AddQuizState {
 }
 
 //
-final AddQuizProvider =
-    StateNotifierProvider<AddQuizNotifier, AddQuizState>(
+final addQuizProvider = StateNotifierProvider<AddQuizNotifier, AddQuizState>(
   (ref) => AddQuizNotifier(ref)..initState(),
 );
 
@@ -30,7 +29,11 @@ class AddQuizNotifier extends StateNotifier<AddQuizState> {
   final Ref ref;
   //ログイン・ログアウトするたびに状態をアップデート
 
-  AddQuizNotifier(this.ref) : super(AddQuizState(currentIndex:0, quizList: [],)) {
+  AddQuizNotifier(this.ref)
+      : super(AddQuizState(
+          currentIndex: 0,
+          quizList: [],
+        )) {
     //ここに初期処理を書く
     initState();
     //例　ローカルのデータベースの初期処理
@@ -42,8 +45,7 @@ class AddQuizNotifier extends StateNotifier<AddQuizState> {
       GlobalObjectKey<FormState>('LoginNotifier');
 
   Future<void> initState() async {
-    localroad();
-    //WidgetsBinding.instance.addPostFrameCallback((_) => ref.read(noteProvider.notifier).state=Notes(text: "", addtime: DateTime.now(), id: "", qlist: []));
+    //WidgetsBinding.instance.addPostFrameCallback((_) => ref.read(quizProvider.notifier).state=questions(text: "", addtime: DateTime.now(), id: "", qlist: []));
     //build完了時　=>以降の処理(ref.read....)
   }
 
@@ -54,43 +56,47 @@ class AddQuizNotifier extends StateNotifier<AddQuizState> {
 
   Future<void> localsave() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<Questions> savenote = state.quizList;
-    List<String> data = savenote.map((e) => jsonEncode(e)).toList();
+    List<Questions> savequestion = state.quizList;
+    List<String> data = savequestion.map((e) => jsonEncode(e)).toList();
     prefs.setStringList('quizList', data);
   }
 
-  Future<void> localroad() async {
+  Future<void> localroad(String noteId) async {
+    print('nodeID;$noteId');
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final data = prefs.getStringList('quizList');
     if (data != null) {
-      List<Questions> loadnote =
+      List<Questions> allQuestions =
           data.map((e) => Questions.fromJson(jsonDecode(e))).toList();
-      state = state.copyWith(quizList: loadnote);
+      print('全データ:$allQuestions ');
+
+      state = state.copyWith(
+          quizList: allQuestions
+              .where((element) => element.noteid == noteId)
+              .toList());
     }
+  }
+
+  void addNewQuestion(String noteid, int index) {
+    Questions question = Questions(
+        id: index.toString(),
+        text: '',
+        image: '',
+        option: [],
+        answer: '',
+        explain: '',
+        noteid: noteid);
+    List<Questions> newquestions = [...state.quizList, question];
+    state = state.copyWith(quizList: newquestions);
+    localsave();
   }
 
   // state は immutable なため、copyWith で複製する
-  void addnote(Questions note) {
-    List<Questions> newNotes = [...state.quizList, note];
-    state = state.copyWith(quizList: newNotes);
+  void updateQuestion(Questions question) {
+    removeTodo(question.id);
+    List<Questions> newquestions = [...state.quizList, question];
+    state = state.copyWith(quizList: newquestions);
     localsave();
-    supabaseSave(note);
-  }
-
-  Future<void> supabaseSave(Questions note) async {
-    final updates = {
-      'id': note.id,
-     
-    };
-    try {
-      await supabase.from('Notes').upsert(updates);
-      if (mounted) {
-        print(mounted);
-        //context.showSnackBar(message: 'Successfully updated profile!');
-      }
-    } catch (error) {
-      print(error); // context.showErrorSnackBar(message: error.message);
-    }
   }
 
   void removeTodo(String id) {
@@ -101,8 +107,8 @@ class AddQuizNotifier extends StateNotifier<AddQuizState> {
     localsave();
   }
 
-  void updatenote(Questions note) {
-    removeTodo(note.id);
-    addnote(note);
-  }
+  // void updatequestion(Questions question) {
+  //   removeTodo(question.id);
+  //   addquestion(question);
+  // }
 }

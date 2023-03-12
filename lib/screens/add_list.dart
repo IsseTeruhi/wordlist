@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
+import 'package:wordlistandtest_app/screens/add_quiz/add_quiz_notifier.dart';
 import 'package:wordlistandtest_app/screens/home/home_screen_notifier.dart';
 import '../models/notes/notes_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,18 +13,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 // bool型を使うためのProvider。初期値はfalseにする
 final enableProvider = StateProvider<bool>(((ref) => true));
 final currentNoteProvider = StateProvider<Notes>(
-    (ref) => Notes(text: "", addtime: DateTime.now(), id: "", qlist: []));
+    (ref) => Notes(text: "", addtime: DateTime.now(), id: ""));
 
 class Addlist extends ConsumerWidget {
-  Addlist({Key? key})
-      : super(key: key); //widgetが固有のものを持つ
+  Addlist({Key? key}) : super(key: key); //widgetが固有のものを持つ
   final uuid = const Uuid();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-   
     final note = ref.watch(currentNoteProvider);
 
-    final boolNotifier = ref.read(enableProvider.notifier); ////
+    final addQuizNotifier = ref.read(addQuizProvider.notifier);
 
     final homeNotifier =
         ref.read(homeScreenProvider.notifier); //動的な変更処理、関数処理を行うときにnotifierを使う
@@ -57,11 +56,11 @@ class Addlist extends ConsumerWidget {
                 onPressed: note.text.isEmpty ////
                     ? null //directにnullをつけないと処理が反映されない
                     : () {
-                       
                         final _tentatibeid = uuid.v4();
                         final _editididnote = note.copyWith(id: _tentatibeid);
                         homeNotifier.addnote(_editididnote);
-                         context.go('/add/$_tentatibeid/0');
+                        addQuizNotifier.addNewQuestion(_tentatibeid, 0);
+                        context.go('/add/$_tentatibeid/0');
                         //ref.read(noteProvider.notifier).state=Notes(text: "", addtime: DateTime.now(), id: "", qlist: []);
                       },
                 // ①

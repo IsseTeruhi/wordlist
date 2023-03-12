@@ -14,11 +14,10 @@ abstract class Notes implements _$Notes {
     required String text,
     required DateTime addtime,
     required String id,
-    required List<Questions> qlist,
   }) = _Notes;
 
   factory Notes.empty() =>
-      Notes(text: '', addtime: DateTime.now(), id: '', qlist: []);
+      Notes(text: '', addtime: DateTime.now(), id: '');
 
   factory Notes.fromJson(Map<String, dynamic> json) => _$NotesFromJson(json);
 }
