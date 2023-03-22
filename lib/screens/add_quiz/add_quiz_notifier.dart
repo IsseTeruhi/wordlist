@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 import 'package:wordlistandtest_app/common/constants.dart';
 import 'package:wordlistandtest_app/models/questions/questions_model.dart';
 
@@ -21,7 +22,7 @@ class AddQuizState with _$AddQuizState {
 }
 
 //
-final addQuizProvider = StateNotifierProvider<AddQuizNotifier, AddQuizState>(
+final quizProvider = StateNotifierProvider<AddQuizNotifier, AddQuizState>(
   (ref) => AddQuizNotifier(ref)..initState(),
 );
 
@@ -39,10 +40,8 @@ class AddQuizNotifier extends StateNotifier<AddQuizState> {
     //例　ローカルのデータベースの初期処理
   }
   //状態処理のプログラムをここでまとめている
-  final bool _isLoading = false;
 
-  final GlobalKey<FormState> formKey =
-      GlobalObjectKey<FormState>('LoginNotifier');
+ 
 
   Future<void> initState() async {
     //WidgetsBinding.instance.addPostFrameCallback((_) => ref.read(quizProvider.notifier).state=questions(text: "", addtime: DateTime.now(), id: "", qlist: []));
@@ -77,9 +76,11 @@ class AddQuizNotifier extends StateNotifier<AddQuizState> {
     }
   }
 
-  void addNewQuestion(String noteid, int index) {
+  void addNewQuestion(String noteid) {
+     final uuid = const Uuid();
+     final _uuid = uuid.v4();
     Questions question = Questions(
-        id: index.toString(),
+        id:_uuid,
         text: '',
         image: '',
         option: [],
@@ -92,10 +93,12 @@ class AddQuizNotifier extends StateNotifier<AddQuizState> {
   }
 
   // state は immutable なため、copyWith で複製する
-  void updateQuestion(Questions question) {
-    removeTodo(question.id);
-    List<Questions> newquestions = [...state.quizList, question];
-    state = state.copyWith(quizList: newquestions);
+  void updateQuestion(Questions question,int index) {
+
+removeTodo(question.id);
+    List<Questions> quizLists = List.of(state.quizList);
+    quizLists.insert(index,question);
+    state = state.copyWith(quizList: quizLists);
     localsave();
   }
 
