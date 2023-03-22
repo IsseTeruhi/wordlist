@@ -22,7 +22,7 @@ class Addlist extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final note = ref.watch(currentNoteProvider);
 
-    final addQuizNotifier = ref.read(addQuizProvider.notifier);
+    final addQuizNotifier = ref.read(quizProvider.notifier);
 
     final homeNotifier =
         ref.read(homeScreenProvider.notifier); //動的な変更処理、関数処理を行うときにnotifierを使う
@@ -56,11 +56,11 @@ class Addlist extends ConsumerWidget {
                 onPressed: note.text.isEmpty ////
                     ? null //directにnullをつけないと処理が反映されない
                     : () {
-                        final _tentatibeid = uuid.v4();
-                        final _editididnote = note.copyWith(id: _tentatibeid);
-                        homeNotifier.addnote(_editididnote);
-                        addQuizNotifier.addNewQuestion(_tentatibeid, 0);
-                        context.go('/add/$_tentatibeid/0');
+                        final uuId = uuid.v4();
+                        final editididnote = note.copyWith(id: uuId);
+                        homeNotifier.addnote(editididnote);
+                        addQuizNotifier.addNewQuestion(uuId);
+                        context.go('/add/$uuId/0');
                         //ref.read(noteProvider.notifier).state=Notes(text: "", addtime: DateTime.now(), id: "", qlist: []);
                       },
                 // ①

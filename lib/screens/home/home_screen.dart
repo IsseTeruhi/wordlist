@@ -72,7 +72,7 @@ class HomeScreen extends ConsumerWidget {
                   border: new Border(
                       bottom: BorderSide(width: 1.0, color: Colors.grey))),
               child: ListTile(
-                onTap: () => context.go('/add/${_notelist[index].id}/0'),
+                onTap: () => context.go('/Quiz/${_notelist[index].id}/0'),
                 title: Text(
                   _notelist[index].text,
                   style: TextStyle(fontSize: 30),

@@ -37,10 +37,9 @@ class HomeScreenNotifier extends StateNotifier<HomeScreenState> {
     //例　ローカルのデータベースの初期処理
   }
   //状態処理のプログラムをここでまとめている
-  final bool _isLoading = false;
+ 
 
-  final GlobalKey<FormState> formKey =
-      GlobalObjectKey<FormState>('LoginNotifier');
+
 
   Future<void> initState() async {
     localroad();

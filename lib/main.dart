@@ -3,24 +3,23 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wordlistandtest_app/common/constants.dart';
-import 'package:wordlistandtest_app/screens/answer_quiz.dart';
+import 'package:wordlistandtest_app/screens/quiz_screen/quiz_screen.dart';
 import 'package:wordlistandtest_app/screens/detail_quiz.dart';
+import 'package:wordlistandtest_app/screens/result/result_screen.dart';
 import 'package:wordlistandtest_app/screens/set_quiz.dart';
 import 'package:wordlistandtest_app/screens/add_list.dart';
 import 'package:wordlistandtest_app/screens/edit_list.dart';
 
 import 'screens/add_quiz/add_quiz.dart';
 import 'screens/home/home_screen.dart';
-import 'screens/result.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Supabase.initialize(
-    url: supabaseUrl ,
+    url: supabaseUrl,
     anonKey: supabaseAnonKey,
   );
   runApp(ProviderScope(child: MyApp()));
-  
 }
 
 final _router = GoRouter(
@@ -41,35 +40,40 @@ final _router = GoRouter(
           GoRoute(
               path: ':noteid/:pindex',
               pageBuilder: (context, state) => MaterialPage(
-                    child: AddQuiz(noteId:state.params['noteid']! ,pindex:int.parse(state.params['pindex']??'0')),
+                    child: AddQuiz(
+                        noteId: state.params['noteid']!,
+                        pindex: int.parse(state.params['pindex'] ?? '0')),
                   )),
         ]),
+    // GoRoute(
+    //   path: '/Quiz/:noteid/configue',
+    //   pageBuilder: (context, state) => MaterialPage(
+    //     child: Setquiz(),
+    //   ),
+    // ),
     GoRoute(
-      path: '/Q/:listid/configue',
+        path: '/Quiz/:noteid/:pindex',
+        pageBuilder: (context, state) => MaterialPage(
+              child: QuizScreen(
+                noteId: state.params['noteid']!,
+                pindex: int.parse(state.params['pindex'] ?? '0'),
+              ),
+            ),
+        ),
+    GoRoute(
+      path: '/Result/:noteid',
       pageBuilder: (context, state) => MaterialPage(
-        child: Setquiz(),
+        child: ResultScreen(noteId: state.params['noteid']!),
       ),
     ),
     GoRoute(
-      path: '/Q/:listid/answering/:qid',
-      pageBuilder: (context, state) => MaterialPage(
-        child: Answerquiz(),
-      ),
-    ),
-    GoRoute(
-      path: '/Q/:listid/result',
-      pageBuilder: (context, state) => MaterialPage(
-        child: Resultscreen(),
-      ),
-    ),
-    GoRoute(
-      path: '/Q/:listid/result/detail/:qid',
+      path: '/Quiz/:noteid/result/detail/:qid',
       pageBuilder: (context, state) => MaterialPage(
         child: Detailquiz(),
       ),
     ),
     GoRoute(
-      path: '/listedit/:listid',
+      path: '/listedit/:noteid',
       pageBuilder: (context, state) => MaterialPage(
         child: Editlist(),
       ),
