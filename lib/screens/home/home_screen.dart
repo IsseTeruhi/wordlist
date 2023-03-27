@@ -10,7 +10,6 @@ import 'home_screen_notifier.dart';
 
 class HomeScreen extends ConsumerWidget {
   HomeScreen({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(homeScreenProvider); //river podでデータの更新の監視
@@ -23,15 +22,15 @@ class HomeScreen extends ConsumerWidget {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text(
+            title: const Text(
               "警告",
               style: TextStyle(color: Colors.red),
             ),
-            content: Text("本当に削除しますか？"),
+            content: const Text("本当に削除しますか？"),
             actions: <Widget>[
               // ボタン領域
               TextButton(
-                child: Text("Cancel"),
+                child:const Text("Cancel"),
                 onPressed: () {
                   //context.go('/');
                   Navigator.of(context).pop();
@@ -40,7 +39,6 @@ class HomeScreen extends ConsumerWidget {
               TextButton(
                 child: Text("OK"),
                 onPressed: () {
-                  print(_notelist);
                   homeNotifier.removeTodo(
                       _uid); //listの削除処理がわからない(riverpodを使った？,ref.read ?)
                   //context.go('/');           //routerが使えない？
@@ -56,7 +54,11 @@ class HomeScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: Colors.amber,
       appBar: AppBar(
-        title: Text('リスト一覧'),
+        title: const Text('リスト一覧'),
+         actions: <Widget>[ IconButton(
+          icon: const Icon(Icons.account_circle),
+          onPressed: () => context.go('/Login'),
+        ),]
       ),
       body: ListView.builder(
         itemCount: _notelist.length,
