@@ -3,6 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wordlistandtest_app/common/constants.dart';
+import 'package:wordlistandtest_app/screens/auth/forget/forget_screen.dart';
+import 'package:wordlistandtest_app/screens/auth/login/login_screen.dart';
+import 'package:wordlistandtest_app/screens/auth/signup/signup_screen.dart';
+
 import 'package:wordlistandtest_app/screens/quiz_screen/quiz_screen.dart';
 import 'package:wordlistandtest_app/screens/detail_quiz.dart';
 import 'package:wordlistandtest_app/screens/result/result_screen.dart';
@@ -25,6 +29,24 @@ void main() async {
 final _router = GoRouter(
   initialLocation: '/home',
   routes: [
+    GoRoute(
+      path: '/Login',
+      pageBuilder: (context, state) => const MaterialPage(
+        child: LoginScreen(),
+      ),
+    ),
+    GoRoute(
+      path: '/Forget',
+      pageBuilder: (context, state) => const MaterialPage(
+        child: ForgetScreen(),
+      ),
+    ),
+    GoRoute(
+      path: '/Signup',
+      pageBuilder: (context, state) => const MaterialPage(
+        child: SignupScreen(),
+      ),
+    ),
     GoRoute(
       path: '/home',
       pageBuilder: (context, state) => MaterialPage(
@@ -52,14 +74,14 @@ final _router = GoRouter(
     //   ),
     // ),
     GoRoute(
-        path: '/Quiz/:noteid/:pindex',
-        pageBuilder: (context, state) => MaterialPage(
-              child: QuizScreen(
-                noteId: state.params['noteid']!,
-                pindex: int.parse(state.params['pindex'] ?? '0'),
-              ),
-            ),
+      path: '/Quiz/:noteid/:pindex',
+      pageBuilder: (context, state) => MaterialPage(
+        child: QuizScreen(
+          noteId: state.params['noteid']!,
+          pindex: int.parse(state.params['pindex'] ?? '0'),
         ),
+      ),
+    ),
     GoRoute(
       path: '/Result/:noteid',
       pageBuilder: (context, state) => MaterialPage(
@@ -67,9 +89,12 @@ final _router = GoRouter(
       ),
     ),
     GoRoute(
-      path: '/Quiz/:noteid/result/detail/:qid',
+      path: '/Quiz/:noteid/detail/:qid',
       pageBuilder: (context, state) => MaterialPage(
-        child: Detailquiz(),
+        child: DetailQuizScreen(
+          noteId: state.params['noteid']!,
+          pindex: int.parse(state.params['pindex']??'0'),
+        ),
       ),
     ),
     GoRoute(
@@ -94,6 +119,7 @@ class MyApp extends StatelessWidget {
       routeInformationParser: _router.routeInformationParser,
       routerDelegate: _router.routerDelegate,
       routeInformationProvider: _router.routeInformationProvider,
+      debugShowCheckedModeBanner: false,
     );
   }
 }
